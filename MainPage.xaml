@@ -1,0 +1,238 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="GKFashionApp.MainPage"
+             BackgroundColor="#FAFAFA"
+             NavigationPage.HasNavigationBar="False"
+             Title="GK Fashion">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style TargetType="Frame">
+                <Setter Property="CornerRadius" Value="12" />
+                <Setter Property="HasShadow" Value="True" />
+                <Setter Property="BorderColor" Value="Transparent" />
+            </Style>
+            <Style TargetType="Button" x:Key="PrimaryButton">
+                <Setter Property="BackgroundColor" Value="#1E88E5" />
+                <Setter Property="TextColor" Value="White" />
+                <Setter Property="FontAttributes" Value="Bold" />
+                <Setter Property="CornerRadius" Value="8" />
+                <Setter Property="HeightRequest" Value="50" />
+                <Setter Property="FontSize" Value="14" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid RowDefinitions="*, Auto" BackgroundColor="#FAFAFA">
+
+        <!-- HOME TAB -->
+        <Grid Grid.Row="0" IsVisible="{Binding IsHomeTab}" RowDefinitions="Auto, *">
+            <!-- Header -->
+            <Frame Grid.Row="0" BackgroundColor="#FFFFFF" Padding="20,15" Margin="0" CornerRadius="0" HasShadow="True">
+                <Grid ColumnDefinitions="*, Auto" ColumnSpacing="15">
+                    <StackLayout Grid.Column="0" Spacing="4" VerticalOptions="Center">
+                        <Label Text="GK FASHION" TextColor="#1E88E5" FontSize="26" FontAttributes="Bold"/>
+                        <Label Text="Premium Clothing Collection" TextColor="#757575" FontSize="13"/>
+                    </StackLayout>
+                    <Label Grid.Column="1" Text="👔" FontSize="32" VerticalOptions="Center" HorizontalOptions="Center" WidthRequest="50"/>
+                </Grid>
+            </Frame>
+
+            <!-- Products Grid -->
+            <CollectionView Grid.Row="1" ItemsSource="{Binding ClothingItems}" SelectionChangedCommand="{Binding OpenDetailsCommand}">
+                <CollectionView.ItemsLayout>
+                    <GridItemsLayout Orientation="Vertical" Span="2" HorizontalItemSpacing="12" VerticalItemSpacing="12" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.EmptyView>
+                    <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Spacing="10" Margin="12">
+                        <Label Text="🛍️" FontSize="60" HorizontalOptions="Center"/>
+                        <Label Text="No Items Available" TextColor="#BDBDBD" FontSize="16" HorizontalOptions="Center"/>
+                        <Label Text="Check back soon for new arrivals" TextColor="#E0E0E0" FontSize="12" HorizontalOptions="Center"/>
+                    </StackLayout>
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Grid Margin="6">
+                            <Frame Padding="0" IsClippedToBounds="True" HeightRequest="280" BackgroundColor="White" HasShadow="True">
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.OpenDetailsCommand}" CommandParameter="{Binding .}"/>
+                                </Frame.GestureRecognizers>
+                                <Grid RowDefinitions="170, Auto, Auto, Auto" RowSpacing="0">
+                                    <!-- Product Image -->
+                                    <Image Grid.Row="0" Source="{Binding ImageUrl}" Aspect="AspectFill" BackgroundColor="#F5F5F5"/>
+                                    
+                                    <!-- Price Badge -->
+                                    <Frame Grid.Row="0" HorizontalOptions="End" VerticalOptions="Start" BackgroundColor="#1E88E5" Padding="10,6" CornerRadius="6" Margin="10,10,10,0" HasShadow="False">
+                                        <Label Text="{Binding Price, StringFormat='₹{0}'}" TextColor="White" FontSize="13" FontAttributes="Bold"/>
+                                    </Frame>
+                                    
+                                    <!-- Product Name -->
+                                    <Label Grid.Row="1" Text="{Binding Name}" FontSize="14" FontAttributes="Bold" TextColor="#212121" Margin="12,10,12,4" LineBreakMode="TailTruncation"/>
+                                    
+                                    <!-- Size Info -->
+                                    <Label Grid.Row="2" Text="{Binding Size, StringFormat='Size: {0}'}" FontSize="12" TextColor="#757575" Margin="12,0,12,8"/>
+                                    
+                                    <!-- View Details Button -->
+                                    <Label Grid.Row="3" Text="TAP TO VIEW" FontSize="11" TextColor="#1E88E5" FontAttributes="Bold" VerticalOptions="End" HorizontalOptions="Center" Margin="0,0,0,12"/>
+                                </Grid>
+                            </Frame>
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Grid>
+
+        <!-- ADMIN TAB -->
+        <ScrollView Grid.Row="0" IsVisible="{Binding IsAdminTab}">
+            <StackLayout Padding="16" Spacing="16">
+                <!-- Header -->
+                <Label Text="ADMIN DASHBOARD" TextColor="#1E88E5" FontSize="28" FontAttributes="Bold" Margin="0,10,0,0"/>
+                
+                <!-- Status Bar -->
+                <Frame BackgroundColor="{Binding StatusColor}" Padding="14,12" Margin="0" CornerRadius="8" HasShadow="True">
+                    <Label Text="{Binding StatusMessage}" TextColor="White" FontAttributes="Bold" HorizontalOptions="Center" FontSize="13"/>
+                </Frame>
+
+                <!-- Add Product Card -->
+                <Frame BackgroundColor="White" Padding="16" Margin="0" HasShadow="True">
+                    <StackLayout Spacing="14">
+                        <Label Text="ADD NEW PRODUCT" TextColor="#1E88E5" FontSize="14" FontAttributes="Bold"/>
+                        
+                        <Frame BackgroundColor="#F5F5F5" CornerRadius="6" Padding="0" HasShadow="False">
+                            <Entry Placeholder="Product Name" Text="{Binding Name}" TextColor="#212121" PlaceholderColor="#BDBDBD" Margin="12,10"/>
+                        </Frame>
+                        
+                        <Grid ColumnDefinitions="*, *" ColumnSpacing="10">
+                            <Frame Grid.Column="0" BackgroundColor="#F5F5F5" CornerRadius="6" Padding="0" HasShadow="False">
+                                <Entry Placeholder="Size" Text="{Binding Size}" TextColor="#212121" PlaceholderColor="#BDBDBD" Margin="12,10"/>
+                            </Frame>
+                            <Frame Grid.Column="1" BackgroundColor="#F5F5F5" CornerRadius="6" Padding="0" HasShadow="False">
+                                <Entry Placeholder="Price" Keyboard="Numeric" Text="{Binding Price}" TextColor="#212121" PlaceholderColor="#BDBDBD" Margin="12,10"/>
+                            </Frame>
+                        </Grid>
+                        
+                        <Frame BackgroundColor="#F5F5F5" CornerRadius="6" Padding="0" HasShadow="False">
+                            <Entry Placeholder="Image URL" Text="{Binding ImageUrl}" TextColor="#212121" PlaceholderColor="#BDBDBD" Margin="12,10"/>
+                        </Frame>
+                        
+                        <Frame BackgroundColor="#F5F5F5" CornerRadius="6" Padding="0" HasShadow="False">
+                            <Editor Placeholder="Product Description" Text="{Binding Description}" TextColor="#212121" PlaceholderColor="#BDBDBD" HeightRequest="70" Margin="12,10"/>
+                        </Frame>
+                        
+                        <Button Text="✓ SAVE PRODUCT" Command="{Binding AddCommand}" Style="{StaticResource PrimaryButton}" Margin="0,5,0,0"/>
+                    </StackLayout>
+                </Frame>
+
+                <!-- Products List Header -->
+                <Label Text="CURRENT STOCK" TextColor="#1E88E5" FontSize="14" FontAttributes="Bold" Margin="0,5,0,0"/>
+                
+                <!-- Products Inventory -->
+                <CollectionView ItemsSource="{Binding ClothingItems}" HeightRequest="420">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame Margin="0,6" Padding="12" BackgroundColor="White" HasShadow="True">
+                                <Grid ColumnDefinitions="60, *, Auto" ColumnSpacing="12">
+                                    <Frame Grid.Column="0" Padding="0" IsClippedToBounds="True" CornerRadius="8" HasShadow="False" BackgroundColor="#F5F5F5">
+                                        <Image Source="{Binding ImageUrl}" Aspect="AspectFill" HeightRequest="60" WidthRequest="60"/>
+                                    </Frame>
+                                    
+                                    <StackLayout Grid.Column="1" Padding="0" Spacing="4" VerticalOptions="Center">
+                                        <Label Text="{Binding Name}" FontAttributes="Bold" TextColor="#212121" FontSize="13"/>
+                                        <Label Text="{Binding Price, StringFormat='₹{0}'}" TextColor="#1E88E5" FontSize="12" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Size, StringFormat='Size: {0}'}" TextColor="#757575" FontSize="11"/>
+                                    </StackLayout>
+                                    
+                                    <Button Grid.Column="2" Text="DELETE" BackgroundColor="#E53935" TextColor="White" FontSize="11" HeightRequest="38" WidthRequest="75" CornerRadius="6" Command="{Binding Source={RelativeSource AncestorType={x:Type ContentPage}}, Path=BindingContext.DeleteCommand}" CommandParameter="{Binding .}"/>
+                                </Grid>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </StackLayout>
+        </ScrollView>
+
+        <!-- DETAILS OVERLAY -->
+        <Grid BackgroundColor="White" IsVisible="{Binding IsDetailsVisible}" Grid.RowSpan="2">
+            <ScrollView>
+                <StackLayout Spacing="0">
+                    <!-- Close Button -->
+                    <Button Text="✕" FontSize="24" BackgroundColor="Transparent" TextColor="#212121" HorizontalOptions="Start" Command="{Binding CloseDetailsCommand}" Margin="12,12,0,0" Padding="6"/>
+                    
+                    <!-- Product Image -->
+                    <Image Source="{Binding SelectedProduct.ImageUrl}" Aspect="AspectFill" HeightRequest="420" BackgroundColor="#F5F5F5"/>
+                    
+                    <!-- Product Info -->
+                    <StackLayout Padding="20,24" Spacing="16">
+                        <!-- Price & Name -->
+                        <Grid ColumnDefinitions="*, Auto" ColumnSpacing="10">
+                            <Label Grid.Column="0" Text="{Binding SelectedProduct.Name}" FontSize="26" FontAttributes="Bold" TextColor="#212121" LineBreakMode="WordWrap"/>
+                            <Label Grid.Column="1" Text="{Binding SelectedProduct.Price, StringFormat='₹{0}'}" FontSize="24" FontAttributes="Bold" TextColor="#1E88E5" VerticalOptions="Start"/>
+                        </Grid>
+                        
+                        <!-- Size Badge -->
+                        <Frame HorizontalOptions="Start" Padding="14,8" BackgroundColor="#E3F2FD" CornerRadius="6" HasShadow="False">
+                            <Label Text="{Binding SelectedProduct.Size, StringFormat='📏 Size: {0}'}" TextColor="#1E88E5" FontAttributes="Bold" FontSize="12"/>
+                        </Frame>
+                        
+                        <!-- Description -->
+                        <StackLayout Spacing="8">
+                            <Label Text="DESCRIPTION" TextColor="#1E88E5" FontSize="12" FontAttributes="Bold"/>
+                            <Label Text="{Binding SelectedProduct.Description}" TextColor="#424242" FontSize="14" LineBreakMode="WordWrap"/>
+                        </StackLayout>
+                    </StackLayout>
+                </StackLayout>
+            </ScrollView>
+        </Grid>
+
+        <!-- BOTTOM NAVIGATION -->
+        <Grid Grid.Row="1" BackgroundColor="White" HeightRequest="70" ColumnDefinitions="*, *" Padding="0">
+            <BoxView Grid.ColumnSpan="2" HeightRequest="1" Color="#E0E0E0" VerticalOptions="Start"/>
+            
+            <!-- Shop Tab -->
+            <StackLayout Grid.Column="0" VerticalOptions="Center" HorizontalOptions="Center" Spacing="6">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SwitchToHomeCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <Label Text="🏠" FontSize="22" HorizontalOptions="Center" TextColor="#BDBDBD">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsHomeTab}" Value="True">
+                            <Setter Property="TextColor" Value="#1E88E5" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label Text="SHOP" FontSize="11" FontAttributes="Bold" TextColor="#BDBDBD" HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsHomeTab}" Value="True">
+                            <Setter Property="TextColor" Value="#1E88E5" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <BoxView HeightRequest="3" Color="#1E88E5" VerticalOptions="End" IsVisible="{Binding IsHomeTab}" WidthRequest="50"/>
+            </StackLayout>
+
+            <!-- Admin Tab -->
+            <StackLayout Grid.Column="1" VerticalOptions="Center" HorizontalOptions="Center" Spacing="6">
+                <StackLayout.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding SwitchToAdminCommand}"/>
+                </StackLayout.GestureRecognizers>
+                <Label Text="⚙️" FontSize="22" HorizontalOptions="Center" TextColor="#BDBDBD">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsAdminTab}" Value="True">
+                            <Setter Property="TextColor" Value="#1E88E5" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <Label Text="ADMIN" FontSize="11" FontAttributes="Bold" TextColor="#BDBDBD" HorizontalOptions="Center">
+                    <Label.Triggers>
+                        <DataTrigger TargetType="Label" Binding="{Binding IsAdminTab}" Value="True">
+                            <Setter Property="TextColor" Value="#1E88E5" />
+                        </DataTrigger>
+                    </Label.Triggers>
+                </Label>
+                <BoxView HeightRequest="3" Color="#1E88E5" VerticalOptions="End" IsVisible="{Binding IsAdminTab}" WidthRequest="50"/>
+            </StackLayout>
+        </Grid>
+
+    </Grid>
+</ContentPage>
