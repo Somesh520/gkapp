@@ -1,0 +1,57 @@
+# Visual Studio / Rider files
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build outputs
+bin/
+obj/
+
+# NuGet
+*.nupkg
+# NuGet Packages folder
+**/packages/*
+
+# MacOS
+.DS_Store
+
+# Android
+**/android/**/build/
+**/android/**/bin/
+**/android/**/obj/
+local.properties
+
+# iOS
+**/iOS/Pods/
+**/iOS/build/
+**/iOS/DerivedData/
+
+# Xamarin Android signing
+*.keystore
+
+# Rider
+.idea/
+
+# DotNet
+*.dotCover
+
+# Others
+*.log
+
+# Secrets
+secrets.json
+
+# User-specific files
+*.userprefs
+
+# JetBrains
+*.iml
+
+# MAUI specific
+Resources/Raw/*.keystore
+
+# Android gradle caches
+.gradle/
